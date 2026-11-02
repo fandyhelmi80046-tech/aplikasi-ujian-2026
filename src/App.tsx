@@ -7,13 +7,12 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   GraduationCap, User, BookOpen, AlertCircle, Sparkles, CheckCircle, 
-  Info, ShieldCheck, Lock, Activity, ArrowRight, Printer, Zap, Mail, GitBranch
+  Info, ShieldCheck, Lock, Activity, ArrowRight, Printer, Zap, Mail
 } from 'lucide-react';
 import { Exam, StudentSession, Teacher, CheatLog, RegistrationSettings } from './types';
 import { INITIAL_EXAMS, INITIAL_STUDENT_SESSIONS, INITIAL_TEACHERS, INITIAL_CHEAT_LOGS, SCHOOL_CLASSES } from './data';
 import PortalGuru from './components/PortalGuru';
 import PortalSiswa from './components/PortalSiswa';
-import GitHubSyncModal from './components/GitHubSyncModal';
 import {
   isFirebaseEnabled,
   dbGetExams, dbSaveExams, dbSubscribeExams,
@@ -38,7 +37,6 @@ export default function App() {
 
   // Current active view: 'home' | 'siswa' | 'guru'
   const [currentView, setCurrentView] = useState<'home' | 'siswa' | 'guru'>('home');
-  const [isGitHubModalOpen, setIsGitHubModalOpen] = useState(false);
 
   // Load master data on mount & subscribe to real-time changes
   useEffect(() => {
@@ -297,21 +295,6 @@ export default function App() {
               exit={{ opacity: 0 }}
               className="relative w-full min-h-screen flex flex-col justify-between overflow-hidden"
             >
-              {/* Top Header Controls: GitHub Online Sync */}
-              <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-30 flex items-center gap-2">
-                <button
-                  onClick={() => setIsGitHubModalOpen(true)}
-                  className="inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 bg-white/90 hover:bg-white text-slate-800 rounded-full text-xs font-bold shadow-lg shadow-indigo-900/20 border border-white/60 backdrop-blur-md transition-all hover:scale-105 cursor-pointer group"
-                  title="Push dan Timpa Repo GitHub Secara Online"
-                >
-                  <GitBranch size={14} className="text-indigo-600 group-hover:rotate-12 transition-transform" />
-                  <span>Timpa Repo GitHub</span>
-                  <span className="flex h-2 w-2 relative">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                  </span>
-                </button>
-              </div>
 
               {/* Background Glows & Ambience */}
               <div className="absolute inset-0 pointer-events-none z-0">
@@ -592,11 +575,6 @@ export default function App() {
         </footer>
       )}
 
-      {/* GitHub Online Push & Overwrite Modal */}
-      <GitHubSyncModal
-        isOpen={isGitHubModalOpen}
-        onClose={() => setIsGitHubModalOpen(false)}
-      />
 
     </div>
   );

@@ -2,5 +2,7 @@
   "name": "CAT_SMPN5LR",
   "description": "Sistem Evaluasi Ujian Akhir Sekolah Mandiri yang dirancang khusus untuk memfasilitasi integrasi portal guru dan siswa SMP Negeri 5 Langke Rembong secara akurat, transparan, dan aman.",
   "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }

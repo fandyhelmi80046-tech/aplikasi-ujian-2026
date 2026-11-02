@@ -210,19 +210,38 @@ export default function GitHubSyncModal({ isOpen, onClose }: GitHubSyncModalProp
 
             {/* Direct Online Push Form */}
             <form onSubmit={handlePush} className="space-y-4">
+              {/* Guidance Notice */}
+              <div className="bg-amber-50 border border-amber-200 rounded-2xl p-3.5 text-xs text-amber-900 space-y-1.5">
+                <div className="font-bold flex items-center gap-1.5 text-amber-800">
+                  <ShieldAlert size={15} className="text-amber-600" />
+                  Penting: Izin Tulis Token GitHub
+                </div>
+                <p className="text-[11px] leading-relaxed text-amber-800">
+                  Untuk menghindari <b>Error 403 (Permission Denied)</b>:
+                </p>
+                <ul className="list-disc pl-4 text-[11px] space-y-1 text-amber-900">
+                  <li>
+                    <b>Token Classic (Direkomendasikan):</b> Klik link di bawah, centang kotak <code>repo</code>, lalu buat token.
+                  </li>
+                  <li>
+                    <b>Token Fine-Grained (awalan <code>github_pat_</code>):</b> Pada menu <i>Repository permissions</i>, wajib ubah <b>Contents</b> dari Read-only menjadi <b>Read and write</b>.
+                  </li>
+                </ul>
+              </div>
+
               <div>
                 <div className="flex items-center justify-between mb-1.5">
                   <label className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
                     <KeyRound size={14} className="text-indigo-600" />
-                    GitHub Personal Access Token (PAT)
+                    GitHub Token (Classic atau Fine-grained)
                   </label>
                   <a
                     href="https://github.com/settings/tokens/new?scopes=repo&description=CAT_SMPN5LR_Push"
                     target="_blank"
                     rel="noreferrer"
-                    className="text-[11px] text-blue-600 hover:text-blue-800 font-semibold flex items-center gap-1"
+                    className="text-[11px] text-blue-600 hover:text-blue-800 font-bold flex items-center gap-1 bg-blue-50 px-2 py-0.5 rounded-lg border border-blue-200"
                   >
-                    Buat Token di GitHub <ExternalLink size={11} />
+                    + Buat Token Classic Baru <ExternalLink size={11} />
                   </a>
                 </div>
                 <div className="relative">
@@ -230,7 +249,7 @@ export default function GitHubSyncModal({ isOpen, onClose }: GitHubSyncModalProp
                     type={showToken ? 'text' : 'password'}
                     value={token}
                     onChange={(e) => setToken(e.target.value)}
-                    placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                    placeholder="Masukkan ghp_... atau github_pat_..."
                     className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white pr-20"
                     disabled={loading}
                   />
@@ -242,9 +261,6 @@ export default function GitHubSyncModal({ isOpen, onClose }: GitHubSyncModalProp
                     {showToken ? 'Sembunyikan' : 'Tampilkan'}
                   </button>
                 </div>
-                <p className="text-[11px] text-slate-500 mt-1.5 leading-relaxed">
-                  Token digunakan untuk otorisasi penulisan ke repository GitHub Anda melalui HTTPS secara aman.
-                </p>
               </div>
 
               <div className="flex items-center gap-2">

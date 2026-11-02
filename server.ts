@@ -107,8 +107,8 @@ Setiap soal harus relevan, jelas, dan akurat.`,
 
   // POST GitHub Push & Overwrite Online
   app.post("/api/github/push", async (req, res) => {
+    const { token, force = true } = req.body || {};
     try {
-      const { token, force = true } = req.body;
       if (!token || typeof token !== "string" || !token.trim()) {
         return res.status(400).json({
           success: false,
@@ -157,9 +157,18 @@ Setiap soal harus relevan, jelas, dan akurat.`,
       });
     } catch (err: any) {
       console.error("Push to GitHub failed:", err);
+      let errorMsg = err.message || "Gagal melakukan git push.";
+      if (errorMsg.includes("403") || errorMsg.includes("denied") || errorMsg.includes("Permission")) {
+        const isFineGrained = token && typeof token === "string" && token.startsWith("github_pat_");
+        if (isFineGrained) {
+          errorMsg = "Akses ditolak (Error 403 Forbidden). Token Fine-Grained ('github_pat_...') Anda belum memiliki izin tulis. Di pengaturan token GitHub: ubah 'Repository permissions' -> 'Contents' menjadi 'Read and write'. ATAU lebih mudah: gunakan Personal Access Token (Classic) dengan mencentang kotak 'repo'.";
+        } else {
+          errorMsg = "Akses ditolak (Error 403 Forbidden). Pastikan GitHub Token memiliki izin 'repo' (Full control of repositories).";
+        }
+      }
       res.status(500).json({
         success: false,
-        error: err.message || "Gagal melakukan git push. Periksa kembali GitHub Token Anda."
+        error: errorMsg
       });
     }
   });
